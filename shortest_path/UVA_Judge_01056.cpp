@@ -80,7 +80,7 @@ int main(){
 		zerar_grafo();
 		cont = 1;
 		for(int x = 0; x < ar; x++){
-			string deonde, praonde;
+			string deonde, praonde; 
 			cin >> deonde >> praonde;
 			if(mp[deonde] == 0){
 				mp[deonde] = cont++;
