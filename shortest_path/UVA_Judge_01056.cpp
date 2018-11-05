@@ -16,26 +16,48 @@ void add_Aresta(int deonde, int praonde){
 }
 
 void dijkstra(string inicio){
+	/* seta todas as distancias inicialmente como infinito */
+	/* obs.: infinito aqui significa que não tem como chegar 
+	nesse vertice em específico! */
+	
 	for(int x = 0; x < maxn; x++){
 		dist[x] = inf;
 	}
+	/* aqui criamos a heap, é greater, logo ela vai colocar os
+	menores pares no topo. obs.:
+	eu utilizo o pair<custo, vertice> porque ele ordena pelo 
+	primeiro elemento, logo como quero o menor custo, assim é
+	worth.
+	*/
+	
 	priority_queue<ii, vector<ii>, greater<ii> > heap;
-	dist[mp[inicio]] = 0;
-	heap.push(mp(0, mp[inicio]));
+	dist[mp[inicio]] = 0; // seto a distancia do vertice incial como 0
+	heap.push(mp(0, mp[inicio])); // dou push na heap com o par <custo, vertice> iniciais
 	while(!heap.empty()){
 		int distancia, praonde;
-		distancia = heap.top().first;
-		praonde = heap.top().second;
-		heap.pop();
-		if(distancia > dist[praonde]){
+		distancia = heap.top().first; // distancia é o primeiro elemento do par
+		deonde = heap.top().second; // deonde é o segundo elemento do par
+		heap.pop(); // dou pop (como ja vou analisar agora, nao preciso mais armazenar)
+		// se a distancia da aresta ja eh maior que a propria distancia ate esse vertice, foda-se
+		if(distancia > dist[deonde]){
 			continue;
 		}
-		for(int x = 0; x < (int) grafo[praonde].size(); x++){
+		// aqui esse for vai analisar todas as arestas conectadas ao vertice 'deonde'
+		for(int x = 0; x < (int) grafo[deonde].size(); x++){
 			int d, i;
-			d = grafo[praonde][x].first;
-			i = grafo[praonde][x].second;
-			if(dist[praonde] + d < dist[i]){
-				dist[i] = dist[praonde] + d;
+			/* aqui ele armazena o peso de cada aresta e pra que vertice leva */
+			d = grafo[deonde][x].first; // peso
+			i = grafo[deonde][x].second; // pra onde vai
+			/* aqui vem a magica:
+			Se a distancia ate o vertice que voce ta analisando + a distancia da aresta
+			ate um outro vertice for menor que a distancia associada a esse vertice para
+			onde voce está indo, logo podemos substituir essa distancia pela menor, que
+			encontramos. */
+			/* obs.: logo após isso, jogamos na heap novamente, já que como descobrimos
+			um menor caminho até esse vértice, temos que calcular novamente todos os outros
+			vértices conectados a ele pelas arestas. */
+			if(dist[deonde] + d < dist[i]){
+				dist[i] = dist[deonde] + d;
 				heap.push(mp(dist[i], i));
 			}
 		}
