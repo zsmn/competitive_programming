@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
-#define maxn 1001
+#define maxn 1000009
 #define inf 1e9
 typedef pair<int, int> ii;
 
