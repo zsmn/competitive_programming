@@ -18,8 +18,16 @@ int main(){
 		if(a1.length() == a2.length()){
 			int p = a1.length();
 			for(int x = 0; x < p; x++){
-				if(!(isVogal(a1[x]) && isVogal(a2[x]) && (a1[x] != a2[x]))){
+				if(isVogal(a1[x])){
+					if(isVogal(a2[x])){
+						//
+					}else{
+						eh = false;
+						break;
+					}
+				}else if(a1[x] != a2[x]){
 					eh = false;
+					break;
 				}
 			}
 		}else{
