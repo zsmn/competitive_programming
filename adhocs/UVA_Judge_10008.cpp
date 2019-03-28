@@ -17,7 +17,7 @@ int main(){
 	string s;
 
 	cin >> n;
-    getline(cin, s);
+    	getline(cin, s);
 	for(int x = 0; x < n; x++){
 		getline(cin, s);
 		for(int y = 0; y < s.length(); y++){
