@@ -12,6 +12,7 @@ int main(){
         ans = 0;
         flag = 0;
         v.clear();
+        
         for(int x = 0; x < s.length(); x++){
             for(int y = 0; y < v.size(); y++){
                 if(s[x] <= v[y].top()){
@@ -27,6 +28,7 @@ int main(){
             }
             flag = 0;
         }
+        
         cout << "Case " << t++ << ": " << ans << endl;
     }
 }
