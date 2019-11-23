@@ -1,2 +1,2 @@
-# UVA_Questions
-Solution of some UVA Judge problems
+# COMPETITIVE PROGRAMMING
+Solution of some competitive programming problems
