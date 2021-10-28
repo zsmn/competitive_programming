@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+/*
+typedef struct{
+    int valor;
+    struct arvore *d;
+    struct arvore *e;
+}arvore;*/
+struct arvore{
+    int valor;
+    struct arvore *d;
+    struct arvore *e;
+};
+typedef struct arvore arvore;
+ 
+arvore *criar(int x){
+    //printf("criou\n");
+    arvore *tmp=NULL;
+    tmp=(arvore*)malloc(sizeof(arvore));
+    (*tmp).valor=x;
+    (*tmp).d=NULL;
+    (*tmp).e=NULL;
+    return tmp;
+ 
+}
+arvore *inserir(arvore *raiz,int x){
+     //   printf("mandou inserir\n");
+ 
+    if(raiz==NULL){
+     //   printf("inseriu\n");
+        return(criar(x));
+      //  printf("doidera3\n");
+ 
+    }
+    else if((*raiz).valor>x){
+      //  printf("x<valor\n");
+        (*raiz).e=inserir((*raiz).e,x);
+    }
+    else{
+      //  printf("x>valor\n");
+        (*raiz).d=inserir((*raiz).d,x);
+    }
+ 
+    return(raiz);
+}
+void posordi(arvore *raiz){
+    if(raiz!=NULL){
+        posordi((*raiz).e);
+        posordi((*raiz).d);
+        printf("%d\n",(*raiz).valor);
+    }
+}
+ 
+ 
+ 
+int main(){
+    arvore *raiz;
+    int num;
+ 
+    raiz=NULL;
+ 
+    while(scanf("%i",&num)!=EOF){
+            raiz = inserir(raiz,num);
+    }
+    posordi(raiz);
+return 0;
+}
