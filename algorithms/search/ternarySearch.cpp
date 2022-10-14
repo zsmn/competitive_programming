@@ -1,4 +1,4 @@
-//Algoritmo de Busca Ternária Recursiva
+//Algoritmo de Busca Ternária Iterativa
 
 #include <bits/stdc++.h>
 
