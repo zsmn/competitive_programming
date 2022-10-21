@@ -1,0 +1,93 @@
+#include <iostream>
+#define N 4
+
+using namespace std;
+
+
+bool same_colum(int M [N][N], int i, int j){
+	while(i >= 0){
+		if(M[i][j] == 1 ){
+			return true;
+		}else{
+			i--;
+		}
+	}
+	return false;
+}
+
+bool same_diagonal(int M [N][N], int i, int j){
+	int i1 = i;
+	int j1= j;
+	int i2 = i;
+	int j2 = j;
+	while(i1 >= 0 and j1>=0){
+		if(M[i1][j1] == 1 ){
+			return true;
+		}else{
+			i1--;
+			j1--;
+		}
+	}
+
+	while(i2 >= 0 and j2< N){
+		if(M[i2][j2] == 1 ){
+			return true;
+		}else{
+			i2--;
+			j2++;
+		}
+	}
+	return false;
+
+
+}
+
+
+bool valid(int M [N][N], int i, int j ){
+	if ( same_colum(M,i,j) or same_diagonal(M,i,j)){
+		return false;
+	}else{
+		return true;
+	}
+}
+
+bool qns(int l, int M [N][N]){
+	if (l == N){
+		return true;
+	}else{
+		for(int i = 0; i<N;i++){
+			if (valid(M,l,i) ){
+				M[l][i] = 1;
+				if (qns(l+1, M) ){
+					return true;
+				}else{
+				M[l][i] = 0;
+				}
+			}
+		}
+		return false;
+	}
+}
+
+int main(){
+
+	int b =4;
+	int tabuleiro[N][N];
+
+// Tabuleiro NxN inicialmente vazio(preenchido por 0)	
+	for (int i =0;i<N;i++){
+		for (int j = 0; j<N;j++){
+			tabuleiro[i][j] = 0;
+		}
+	}
+
+// Se é possível colocar N rainhas no tabuleiro NxN escreve "sim"
+	if(qns(0, tabuleiro) ){
+		cout << "sim";
+	}else{
+		cout << "nao";
+	}
+	
+
+return 0;
+}
