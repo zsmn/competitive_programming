@@ -1,0 +1,125 @@
+#include "bits/stdc++.h"
+using namespace std;
+
+#define int long long
+
+using ii = pair<int, int>;
+using iiii = pair<ii, ii>;
+using iii = tuple<int, int, int>;
+
+const int LIM = 2e5 + 10;
+int sz[LIM], root[LIM];
+
+int find(int a){
+    if(a == root[a]) return a;
+    return root[a] = find(root[a]);
+}
+ 
+void join(int a, int b){
+    a = find(a);
+    b = find(b);
+    if(a != b){
+        if(sz[a] < sz[b])
+            root[b] = a;  
+        else root[a] = b;
+        sz[a] += sz[b];
+        sz[b] = sz[a];
+    }
+}
+
+void init(){
+    for(int i = 0; i < LIM; i++)
+        root[i] = i, sz[i] = 1;
+}
+
+int32_t main(){
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    init();
+
+    int N, L, U;
+    cin >> N >> L >> U;
+
+    vector<int> A(N);
+    for(auto &x: A) cin >> x;
+
+    int Q;
+    cin >> Q;
+
+    vector<vector<ii>> queries_in(N);
+    vector<vector<int>> queries_out(N);
+
+    for(int i = 0; i < Q; i++){
+        int B, E, X;
+        cin >> B >> E >> X;
+
+        queries_in[B - 1].emplace_back(X, i);
+        queries_out[E - 1].push_back(i);
+    }
+
+    set<ii> actives;
+    vector<int> ans(Q);
+    vector<int> state(Q);
+    vector<int> Ubound, Lbound;
+
+    int offset = 0;
+    for(int i = 0; i < N; i++){
+        //primeiro tenho que adicionar a glr que vai entrar
+        for(auto [X, id]: queries_in[i]){
+            actives.insert({X - offset, id});
+            state[id] = X - offset;
+        }
+        
+        //tenho que ver quem vai estourar com a nova atualizacao
+        offset = offset + A[i];
+
+        //se tiver gnt que estourou no limite de cima 
+        while(actives.size()){
+            auto it = actives.rbegin();
+            auto [X, id] = *it;
+            if(X + offset >= U) Ubound.push_back(id), actives.erase(*it);
+            else break; 
+        }
+
+        while(actives.size()){
+            auto it = actives.begin();
+            auto [X, id] = *it;
+            if(X + offset <= L) Lbound.push_back(id), actives.erase(*it);
+            else break; 
+        }
+
+        //tenho que juntar a galera que ta no Ubound
+        if(Ubound.size()){
+            int rep = Ubound.back();
+            while(Ubound.size()){
+                join(rep, Ubound.back());
+                Ubound.pop_back();
+            }
+            rep = find(rep);
+            state[rep] = U - offset;
+            actives.insert({U - offset, rep});
+        }
+
+        if(Lbound.size()){
+            int rep = Lbound.back();
+            while(Lbound.size()){
+                join(rep, Lbound.back());
+                Lbound.pop_back();
+            }
+
+            rep = find(rep);
+            state[rep] = L - offset;
+            actives.insert({L - offset, rep});
+        }
+
+        for(auto id: queries_out[i]){
+            // tenho que achar o valor de rep no set
+            int rep = find(id);
+            ans[id] = state[rep] + offset;
+        }
+    }
+
+    for(auto x: ans)
+        cout << x << "\n";
+}
